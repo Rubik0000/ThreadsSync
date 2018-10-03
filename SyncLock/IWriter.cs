@@ -14,5 +14,7 @@ namespace SyncLock
         void StopWrite();
 
         bool IsWritting();
+
+        event MessageEvent OnWrite;
     }
 }

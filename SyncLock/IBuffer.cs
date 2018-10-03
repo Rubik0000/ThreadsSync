@@ -6,10 +6,14 @@ using System.Threading.Tasks;
 
 namespace SyncLock
 {
-    public interface IBuffer
+    public interface IBuffer : IEnumerable<IMessage>
     {
         bool Push(IMessage mes);
 
-        bool Pop(IMessage mes);
+        IMessage Pop();
+
+        int Capacity { get; }
+
+        int Count { get; }
     }
 }

@@ -7,9 +7,13 @@ using System.Threading;
 
 namespace SyncLock
 {
+    public delegate void MessageEvent(object sender, IMessage message);
+
     class Writer : IWriter
     {
         private Thread _thread;
+
+        public event MessageEvent OnWrite;
 
         public bool IsWritting()
         {
@@ -18,25 +22,35 @@ namespace SyncLock
 
         public void StartWrite(IBuffer buf)
         {
-            _thread = new Thread(Write);
+            _thread = new Thread(() => Write(buf));
             //_thread.IsBackground = true;
             _thread.Start();
-            Console.WriteLine(_thread.ThreadState);
+            //Console.WriteLine(_thread.ThreadState);
         }
 
-        protected void Write()
+        protected void Write(IBuffer buf)
         {
+            var r = new Random();
+            int count = 0;
             for (; ; )
             {
-                Console.WriteLine("The thread is going");
-                Thread.Sleep(1000);
+                if (r.Next(0, 100) == 4)
+                {
+                    var newMes = new Message("Message " + count++);
+                    buf.Push(newMes);
+                    OnWrite?.Invoke(this, newMes);
+                }
+                Thread.Sleep(10);
             }
         }
 
         public void StopWrite()
         {
-            _thread.Interrupt();
-            Console.WriteLine(_thread.ThreadState);
+            try
+            {
+                _thread.Abort();
+            }
+            finally { }
         }
     }
 }
