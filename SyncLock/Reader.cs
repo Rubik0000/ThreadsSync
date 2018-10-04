@@ -7,15 +7,15 @@ using System.Threading;
 
 namespace SyncLock
 {
-    class Reader : IReader
+    class Reader : ThreadUsing, IReader
     {
-        private Thread _thread;
+        private IBuffer _buffer;
 
         public event MessageEvent OnRead;
 
-        public bool IsReading()
+        public Reader(IBuffer buf)
         {
-            throw new NotImplementedException();
+            _buffer = buf;
         }
 
         protected void Read(IBuffer buf, int count)
@@ -27,22 +27,15 @@ namespace SyncLock
 
                 OnRead?.Invoke(this, mes);
             }
-            _thread.Interrupt();
+            StopRead();
         }
 
-        public void StartRead(IBuffer buf, int count)
-        {
-            _thread = new Thread(() => Read(buf, count));
-            _thread.Start();
-        }
+        public bool IsReading() => IsAlive;
 
-        public void StopRead()
-        {
-            try
-            {
-                _thread.Abort();
-            }
-            finally { }
-        }
+        public void StartRead(int count = 1) => 
+            Start( () => Read(_buffer, count) );
+        
+        public void StopRead() => Abort();
+        
     }
 }

@@ -9,48 +9,40 @@ namespace SyncLock
 {
     public delegate void MessageEvent(object sender, IMessage message);
 
-    class Writer : IWriter
+    class RandomWriter : ThreadUsing, IWriter
     {
-        private Thread _thread;
+        private static readonly int threadWait = 10;
+
+        private IBuffer _buffer;
 
         public event MessageEvent OnWrite;
 
-        public bool IsWritting()
+        public RandomWriter(IBuffer buf)
         {
-            throw new NotImplementedException();
-        }
-
-        public void StartWrite(IBuffer buf)
-        {
-            _thread = new Thread(() => Write(buf));
-            //_thread.IsBackground = true;
-            _thread.Start();
-            //Console.WriteLine(_thread.ThreadState);
+            _buffer = buf;
         }
 
         protected void Write(IBuffer buf)
         {
-            var r = new Random();
+            var rand = new Random();
             int count = 0;
             for (; ; )
             {
-                if (r.Next(0, 100) == 4)
+                if (rand.Next(0, 100) == 4)
                 {
                     var newMes = new Message("Message " + count++);
-                    buf.Push(newMes);
-                    OnWrite?.Invoke(this, newMes);
+                    if (buf.Push(newMes))
+                        OnWrite?.Invoke(this, newMes);
                 }
-                Thread.Sleep(10);
+                Thread.Sleep(threadWait);
             }
         }
 
-        public void StopWrite()
-        {
-            try
-            {
-                _thread.Abort();
-            }
-            finally { }
-        }
+        public bool IsWritting() => IsAlive;
+
+        public void StartWrite() => Start( () => Write(_buffer) );
+        
+        public void StopWrite() => Abort();
+        
     }
 }

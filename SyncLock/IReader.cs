@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace SyncLock
 {
-    interface IReader
+    public interface IReader
     {
-        void StartRead(IBuffer buf, int count);
+        void StartRead(int count = 1);
 
         void StopRead();
 

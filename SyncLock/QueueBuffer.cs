@@ -11,6 +11,7 @@ namespace SyncLock
     abstract class QueueBuffer : IBuffer
     {
         private Queue<IMessage> _queue;
+
         public int Capacity { get; private set; }
 
         public int Count
@@ -40,40 +41,24 @@ namespace SyncLock
             return true;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="syncCode"></param>
         protected abstract void Sync(Action syncCode);
 
         public IMessage Pop()
         {
             IMessage mes = null;
-            Sync(() => 
-            {
-                mes = NotSyncPop();
-                //Thread.Sleep(10000);
-            });
+            Sync(() => mes = NotSyncPop());
             return mes;
-            //Console.WriteLine(Thread.CurrentThread.ThreadState);
-            //lock (_queue)
-            //{
-                //Console.WriteLine(Thread.CurrentThread.ThreadState);
-              //  return _queue.Count == 0 ? null : _queue.Dequeue();
-            //}
         }
 
         public bool Push(IMessage mes)
         {
             bool res = false;
-            Sync(() => { res = NotSyncPush(mes); } );
+            Sync(() => res = NotSyncPush(mes));
             return res;
-            /*lock (_queue)
-            {
-                //Console.WriteLine(Thread.CurrentThread.ThreadState);
-                //Thread.Sleep(5000);
-                if (_queue.Count == Capacity) return false;
-
-                _queue.Enqueue(mes);
-                return true;
-            }*/
-
         }
 
         public IEnumerator<IMessage> GetEnumerator()

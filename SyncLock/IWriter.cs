@@ -9,7 +9,7 @@ namespace SyncLock
 {
     public interface IWriter
     {
-        void StartWrite(IBuffer buf);
+        void StartWrite();
 
         void StopWrite();
 

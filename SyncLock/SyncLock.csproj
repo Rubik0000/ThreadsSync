@@ -52,6 +52,9 @@
     <Compile Include="QueueBuffer.cs" />
     <Compile Include="QueueBufferLock.cs" />
     <Compile Include="Reader.cs" />
+    <Compile Include="IReaderCreater.cs" />
+    <Compile Include="ReaderCreater.cs" />
+    <Compile Include="ThreadUsing.cs" />
     <Compile Include="Writer.cs" />
   </ItemGroup>
   <ItemGroup>
