@@ -13,6 +13,10 @@ namespace SyncLock
 
         public event ReaderEvent OnCreateReader;
 
+        /// <summary>
+        /// Create readers at random time moments
+        /// </summary>
+        /// <param name="buf"></param>
         protected void RandomCreate(IBuffer buf)
         {
             var random = new Random();
@@ -25,9 +29,11 @@ namespace SyncLock
             }
         }
 
+        /// <summary>Override</summary>
         public void StartRandomCreate(IBuffer buf) =>
             Start(() => RandomCreate(buf));
 
+        /// <summary>Override</summary>
         public void StopRandomCreate() => Abort();
     }
 }

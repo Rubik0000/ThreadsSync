@@ -8,12 +8,18 @@ using System.Threading;
 
 namespace SyncLock
 {
-    abstract class QueueBuffer : IBuffer
+    /// <summary>
+    /// A buffer on a queue base
+    /// </summary>
+    class QueueBuffer : IBuffer
     {
+        /// <summary>A queue</summary>
         private Queue<IMessage> _queue;
 
+        /// <summary>The capacity</summary>
         public int Capacity { get; private set; }
 
+        /// <summary>The count if elements</summary>
         public int Count
         {
             get
@@ -24,15 +30,28 @@ namespace SyncLock
             }
         }
 
+        /// <summary>
+        /// A constructor
+        /// </summary>
+        /// <param name="cap">A buffer capacity</param>
         public QueueBuffer(int cap)
         {
             _queue = new Queue<IMessage>(cap);
             Capacity = cap;
         }
 
+        /// <summary>
+        /// Pops a message without synchronization
+        /// </summary>
+        /// <returns>A message or null if the queue is empty</returns>
         private IMessage NotSyncPop() =>
             _queue.Count == 0 ? null : _queue.Dequeue();
 
+        /// <summary>
+        /// Pushes a message without synchronization
+        /// </summary>
+        /// <param name="mes">A message</param>
+        /// <returns>True is is was added false if the buffer is full</returns>
         private bool NotSyncPush(IMessage mes)
         {
             if (_queue.Count == Capacity) return false;
@@ -42,11 +61,16 @@ namespace SyncLock
         }
 
         /// <summary>
-        /// 
+        /// Provides a thread synchronization
+        /// By default there is no synchronization
         /// </summary>
-        /// <param name="syncCode"></param>
-        protected abstract void Sync(Action syncCode);
+        /// <param name="syncCode">A code it needs to synch</param>
+        protected virtual void Sync(Action syncCode) { }
 
+        /// <summary>
+        /// Pops a message with synchronization
+        /// </summary>
+        /// <returns>A message or null if the queue is empty</returns>
         public IMessage Pop()
         {
             IMessage mes = null;
@@ -54,6 +78,11 @@ namespace SyncLock
             return mes;
         }
 
+        /// <summary>
+        /// Pushes a message with synchronization
+        /// </summary>
+        /// <param name="mes"></param>
+        /// <returns>True is is was added false if the buffer is full</returns>
         public bool Push(IMessage mes)
         {
             bool res = false;
@@ -61,6 +90,9 @@ namespace SyncLock
             return res;
         }
 
+        /// <summary>
+        /// A enumerator
+        /// </summary>
         public IEnumerator<IMessage> GetEnumerator()
         {
             foreach(var mes in _queue)

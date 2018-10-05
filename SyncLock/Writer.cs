@@ -22,6 +22,10 @@ namespace SyncLock
             _buffer = buf;
         }
 
+        /// <summary>
+        /// Pushes messages into given buffer
+        /// </summary>
+        /// <param name="buf"></param>
         protected void Write(IBuffer buf)
         {
             var rand = new Random();
@@ -38,10 +42,13 @@ namespace SyncLock
             }
         }
 
+        /// <summary>Override</summary>
         public bool IsWritting() => IsAlive;
 
+        /// <summary>Override</summary>
         public void StartWrite() => Start( () => Write(_buffer) );
-        
+
+        /// <summary>Override</summary>
         public void StopWrite() => Abort();
         
     }

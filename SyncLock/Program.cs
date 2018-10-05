@@ -17,6 +17,7 @@ namespace SyncLock
         {
             var buf = new QueueBufferLock(bufSize);
 
+            // The main writer
             var writer = new RandomWriter(buf);
             writer.OnWrite += (object sender, IMessage mes) =>
             {
@@ -25,12 +26,17 @@ namespace SyncLock
                 //Console.ForegroundColor = ConsoleColor.White;
             };
             
+            // The main reader creater
             var readerCreater = new ReaderCreater();
             var rand = new Random();
+
             readerCreater.OnCreateReader += (object sender, IReader reader) =>
             {
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine("New reader");
+
+                // when a new reader is created
+                // it gives an event handler and starts to read
                 reader.OnRead += (object sen, IMessage mes) =>
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
@@ -44,17 +50,24 @@ namespace SyncLock
                 "A lot of randomly created readers get data form the one\r\n");
             Console.WriteLine("Press 's' to start a simulation\r\n" +
                 "Press 'q' to stop the one\r\n");
+
+            // start threads
             PressKey(new char[] { 's', 'S' });
 
             writer.StartWrite();
             readerCreater.StartRandomCreate(buf);
 
+            // stops threads
             PressKey(new char[] { 'q', 'Q' });
 
             writer.StopWrite();
             readerCreater.StopRandomCreate();
         }
 
+        /// <summary>
+        /// Waits until user will press given key
+        /// </summary>
+        /// <param name="keys">A keys it needs to press</param>
         static private void PressKey(Char[] keys)
         {
             for (; ; )
