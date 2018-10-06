@@ -22,7 +22,7 @@ namespace SyncLock
         /// <summary>
         /// Stops to create
         /// </summary>
-        void StopRandomCreate();
+        void StopRandomCreate(bool abortTrackedReaders = false);
 
         /// <summary>
         /// Occurs when a new reader have been created

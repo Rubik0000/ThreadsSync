@@ -13,12 +13,12 @@ namespace SyncLock
     public abstract class ThreadUsing
     {
         /// <summary>A thread</summary>
-        private Thread _thread;
+        private Thread _thread = null;
 
         /// <summary>
         /// Whether the current thread is alive
         /// </summary>
-        protected bool IsAlive => _thread.IsAlive;
+        protected bool IsAlive => _thread == null ? false : _thread.IsAlive;
 
         /// <summary>
         /// Starts a new thread with given function
@@ -26,6 +26,8 @@ namespace SyncLock
         /// <param name="func"></param>
         protected void Start(ThreadStart func)
         {
+            if (IsAlive)
+                Abort();
             _thread = new Thread(func);
             _thread.Start();
         }

@@ -17,7 +17,7 @@ namespace SyncLock
 
         public int CountReaders { get; private set; }
 
-        public ReaderCreater(int countRead)
+        public ReaderCreater(int countRead = 10)
         {
             CountReaders = countRead;
             _readers = new IReader[CountReaders];
@@ -27,7 +27,7 @@ namespace SyncLock
         {
             for (int i = 0; i < _readers.Length; ++i)
             {
-                if (_readers[i] == null || !_readers[i].IsReading())
+                if (_readers[i] == null /*|| !_readers[i].IsReading()*/)
                     return i;
             }
             return -1;
@@ -47,11 +47,14 @@ namespace SyncLock
                     int ind = GetSpareIndReader();
                     if (ind != -1)
                     {
-                        _readers[ind] = new Reader(buf);
-                        OnCreateReader?.Invoke(this, _readers[ind]);
+                        var newR = new Reader(buf);
+                        _readers[ind] = newR;
+                        newR.OnEndReading += (object sender, EventArgs e) => 
+                            _readers[ind] = null;
+
+                        OnCreateReader?.Invoke(this, newR);
                     }
-                }
-                
+                }                
                 Thread.Sleep(threadWait);
             }
         }
@@ -61,6 +64,16 @@ namespace SyncLock
             Start(() => RandomCreate(buf));
 
         /// <summary>Override</summary>
-        public void StopRandomCreate() => Abort();
+        public void StopRandomCreate(bool abortTrackedReaders = false)
+        {
+            if (abortTrackedReaders)
+            {
+                foreach(var reader in _readers)
+                {
+                    reader?.StopRead();
+                }
+            }
+            Abort();
+        }
     }
 }

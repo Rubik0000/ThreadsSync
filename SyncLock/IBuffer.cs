@@ -34,6 +34,14 @@ namespace SyncLock
         /// </summary>
         int Count { get; }
 
+        /// <summary>
+        /// Clears a buffer
+        /// </summary>
+        void Clear();
+
+        /// <summary>
+        /// Occurs when elements was pushed to or poped form a buffer
+        /// </summary>
         event EventHandler OnChange;
     }
 }

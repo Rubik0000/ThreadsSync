@@ -18,6 +18,9 @@ namespace SyncLock
         /// <summary>Override</summary>
         public event MessageEvent OnRead;
 
+        /// <summary>Override</summary>
+        public event EventHandler OnEndReading;
+
         public Reader(IBuffer buf)
         {
             _buffer = buf;
@@ -37,6 +40,7 @@ namespace SyncLock
 
                 OnRead?.Invoke(this, mes);
             }
+            OnEndReading?.Invoke(this, EventArgs.Empty);
             StopRead();
         }
 
@@ -48,7 +52,7 @@ namespace SyncLock
             Start( () => Read(_buffer, count) );
 
         /// <summary>Override</summary>
-        public void StopRead() => Abort();
-        
+        public void StopRead() =>
+            Abort();
     }
 }

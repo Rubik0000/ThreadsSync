@@ -34,9 +34,12 @@ namespace SyncLock
             {
                 if (rand.Next(0, 100) == 4)
                 {
-                    var newMes = new Message("Message " + count++);
+                    var newMes = new Message("Message " + count);
                     if (buf.Push(newMes))
+                    {
+                        ++count;
                         OnWrite?.Invoke(this, newMes);
+                    }
                 }
                 Thread.Sleep(threadWait);
             }

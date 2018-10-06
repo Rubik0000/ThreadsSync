@@ -32,5 +32,7 @@ namespace SyncLock
         /// An event occurs when a reader have gotten an elements
         /// </summary>
         event MessageEvent OnRead;
+
+        event EventHandler OnEndReading;
     }
 }

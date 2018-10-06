@@ -96,6 +96,11 @@ namespace SyncLock
             return res;
         }
 
+        /// <summary>Override</summary>
+        public void Clear() =>        
+            Sync(() => _queue.Clear());
+        
+
         /// <summary>
         /// A enumerator
         /// </summary>

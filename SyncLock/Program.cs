@@ -27,6 +27,7 @@ namespace SyncLock
             };
             
             // The main reader creater
+            //!!
             var readerCreater = new ReaderCreater();
             var rand = new Random();
 
@@ -61,7 +62,7 @@ namespace SyncLock
             PressKey(new char[] { 'q', 'Q' });
 
             writer.StopWrite();
-            readerCreater.StopRandomCreate();
+            readerCreater.StopRandomCreate(true);
         }
 
         /// <summary>
