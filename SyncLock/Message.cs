@@ -9,7 +9,7 @@ namespace SyncLock
     /// <summary>
     /// Represents a plain text mesage
     /// </summary>
-    class Message : IMessage
+    public class Message : IMessage
     {
         /// <summary>A message</summary>
         private string _mes;

@@ -7,11 +7,31 @@ using System.Threading;
 
 namespace SyncLock
 {
-    class ReaderCreater : ThreadUsing, IReaderCreater
+    public class ReaderCreater : ThreadUsing, IReaderCreater
     {
         private static readonly int threadWait = 100;
 
+        private IReader[] _readers;
+
         public event ReaderEvent OnCreateReader;
+
+        public int CountReaders { get; private set; }
+
+        public ReaderCreater(int countRead)
+        {
+            CountReaders = countRead;
+            _readers = new IReader[CountReaders];
+        }
+
+        private int GetSpareIndReader()
+        {
+            for (int i = 0; i < _readers.Length; ++i)
+            {
+                if (_readers[i] == null || !_readers[i].IsReading())
+                    return i;
+            }
+            return -1;
+        }
 
         /// <summary>
         /// Create readers at random time moments
@@ -23,7 +43,14 @@ namespace SyncLock
             for (; ; )
             {
                 if (random.Next(0, 40) == 10)
-                    OnCreateReader?.Invoke(this, new Reader(buf));
+                {
+                    int ind = GetSpareIndReader();
+                    if (ind != -1)
+                    {
+                        _readers[ind] = new Reader(buf);
+                        OnCreateReader?.Invoke(this, _readers[ind]);
+                    }
+                }
                 
                 Thread.Sleep(threadWait);
             }

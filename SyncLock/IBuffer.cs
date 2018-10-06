@@ -33,5 +33,7 @@ namespace SyncLock
         /// Gets a count of elements in a buffer
         /// </summary>
         int Count { get; }
+
+        event EventHandler OnChange;
     }
 }

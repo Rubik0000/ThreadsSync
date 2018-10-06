@@ -9,7 +9,7 @@ namespace SyncLock
 {
     public delegate void MessageEvent(object sender, IMessage message);
 
-    class RandomWriter : ThreadUsing, IWriter
+    public class RandomWriter : ThreadUsing, IWriter
     {
         private static readonly int threadWait = 10;
 

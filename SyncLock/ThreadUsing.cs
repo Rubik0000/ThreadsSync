@@ -10,7 +10,7 @@ namespace SyncLock
     /// <summary>
     /// A class to use multithreading
     /// </summary>
-    abstract class ThreadUsing
+    public abstract class ThreadUsing
     {
         /// <summary>A thread</summary>
         private Thread _thread;

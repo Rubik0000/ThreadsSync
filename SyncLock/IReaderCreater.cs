@@ -11,7 +11,7 @@ namespace SyncLock
     /// <summary>
     /// An interface to create readers
     /// </summary>
-    interface IReaderCreater
+    public interface IReaderCreater
     {
         /// <summary>
         /// Starts to create readers at random time moments

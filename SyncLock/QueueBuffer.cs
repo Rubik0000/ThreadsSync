@@ -11,10 +11,12 @@ namespace SyncLock
     /// <summary>
     /// A buffer on a queue base
     /// </summary>
-    class QueueBuffer : IBuffer
+    public class QueueBuffer : IBuffer
     {
         /// <summary>A queue</summary>
         private Queue<IMessage> _queue;
+
+        public event EventHandler OnChange;
 
         /// <summary>The capacity</summary>
         public int Capacity { get; private set; }
@@ -75,6 +77,8 @@ namespace SyncLock
         {
             IMessage mes = null;
             Sync(() => mes = NotSyncPop());
+            if (mes != null)
+                OnChange?.Invoke(this, EventArgs.Empty);
             return mes;
         }
 
@@ -87,6 +91,8 @@ namespace SyncLock
         {
             bool res = false;
             Sync(() => res = NotSyncPush(mes));
+            if (res)
+                OnChange?.Invoke(this, EventArgs.Empty);
             return res;
         }
 

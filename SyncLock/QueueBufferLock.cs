@@ -9,7 +9,7 @@ namespace SyncLock
     /// <summary>
     /// A queue with a critical section (lock) synchronization
     /// </summary>
-    class QueueBufferLock : QueueBuffer
+    public class QueueBufferLock : QueueBuffer
     {
         /// <summary>A locker</summary>
         private object locker = new object();

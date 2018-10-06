@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.27004.2006
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SyncLock", "SyncLock\SyncLock.csproj", "{7D42BC4F-9063-450D-A651-9A9AFDFD0BFB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SyncLockGUI", "SyncLockGUI\SyncLockGUI.csproj", "{0B95924F-8997-486F-A7B2-D08E81CA05F6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{7D42BC4F-9063-450D-A651-9A9AFDFD0BFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7D42BC4F-9063-450D-A651-9A9AFDFD0BFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7D42BC4F-9063-450D-A651-9A9AFDFD0BFB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B95924F-8997-486F-A7B2-D08E81CA05F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B95924F-8997-486F-A7B2-D08E81CA05F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B95924F-8997-486F-A7B2-D08E81CA05F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B95924F-8997-486F-A7B2-D08E81CA05F6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

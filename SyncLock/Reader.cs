@@ -10,7 +10,7 @@ namespace SyncLock
     /// <summary>
     /// A reader class
     /// </summary>
-    class Reader : ThreadUsing, IReader
+    public class Reader : ThreadUsing, IReader
     {
         /// <summary>A buffer from which to read</summary>
         private IBuffer _buffer;
